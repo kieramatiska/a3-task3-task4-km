@@ -1,0 +1,49 @@
+---
+title: "Untitled"
+author: "Kiera Matiska"
+date: "10/23/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+# Add packages
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+# Read in urchins.csv and clean up column names
+
+- Use the function read_csv() to read in the data
+- Use the fuction clean_names() to change column headers to lower-snake case
+
+```{r}
+urchins <- read_csv(here("data", "urchins.csv"))
+
+urchins_clean <- urchins %>% 
+  clean_names()
+```
+
+# Section 1: Size Comparisons
+
+### Data Wrangling
+
+Use select() to select the columns size and common_name create a new data frame
+
+```{r}
+urchins_size <- urchins_clean %>% 
+  select(common_name, size)
+```
+
+
+### Data visualization
+Using ggplot(), create a histogram using geom_histogram to compare the distribution of sizes between red and purple urchins
+- Reduce number of bins to ~10
+- Add a caption figure
+
+```{r}
+
+```
+
