@@ -39,11 +39,22 @@ urchins_size <- urchins_clean %>%
 
 
 ### Data visualization
+
 Using ggplot(), create a histogram using geom_histogram to compare the distribution of sizes between red and purple urchins
 - Reduce number of bins to ~10
 - Add a caption figure
 
 ```{r}
-
+ggplot(data = urchins_size,
+       aes(x = size, color = common_name)) +
+  geom_histogram() + # Try to figure out how to add color
+  facet_grid(~ common_name) +
+  stat_bin(bins = 10) +
+  labs(title = "Size Distributions of Purple and Red Urchins",
+      x = "Urchin Diameter (cm)",
+      y = "Population Count")
 ```
 
+Figure 1: Size Distributions of Purple and Red Urchins. Sizes are measured using centimeter on sea urchins within this sample.
+
+### Statistical Analyisis
