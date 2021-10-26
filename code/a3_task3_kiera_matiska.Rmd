@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=TRUE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, options(round = 3))
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 # Add packages
 library(tidyverse)
@@ -77,7 +77,10 @@ urchin_size_sum <- urchins_size %>%
             sample_size = n())
 
 urchin_size_sum %>% 
-  kbl(caption = "Statistical data, including mean, median, standard deviation, and sample size, of purple and red sea urchin sizes") %>% 
+  kbl(caption = "Table 1: Statistical data, including mean, median, standard deviation, and sample size, of purple and red sea urchin sizes") %>% 
   kable_styling()
 ```
 
+### Key takeaways
+
+On average, red urchins appear to be larger in size than purple urchins. The overall spread for red urchins is also much larger than the spread of purple urchins, therefore possibly indicating that red urchins have more variations in sizes. The average size of each sample is 4.47 cm for purple urchins and 6.78 for red urchins, therefore showing that red urchins are, on average, greater than 2 cm larger than purple urchins.
