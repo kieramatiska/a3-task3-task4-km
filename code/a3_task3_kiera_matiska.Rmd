@@ -5,13 +5,14 @@ date: "10/23/2021"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, options(round = 3))
 
 # Add packages
 library(tidyverse)
 library(here)
 library(janitor)
+library(kableExtra)
 ```
 
 # Read in urchins.csv and clean up column names
@@ -58,3 +59,25 @@ ggplot(data = urchins_size,
 Figure 1: Size Distributions of Purple and Red Urchins. Sizes are measured using centimeter on sea urchins within this sample.
 
 ### Statistical Analyisis
+
+Using summarize() create a summary table for purple and red sea urchins. Table should include:
+- mean
+- median
+- standard deviation
+- sample size
+
+Use kableExtra to finalize table for knitted document and add a table caption above the table
+
+```{r}
+urchin_size_sum <- urchins_size %>% 
+  group_by(common_name) %>% 
+  summarize(mean(size),
+            median(size),
+            sd(size),
+            sample_size = n())
+
+urchin_size_sum %>% 
+  kbl(caption = "Statistical data, including mean, median, standard deviation, and sample size, of purple and red sea urchin sizes") %>% 
+  kable_styling()
+```
+
