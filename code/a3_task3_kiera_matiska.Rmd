@@ -13,6 +13,7 @@ library(tidyverse)
 library(here)
 library(janitor)
 library(kableExtra)
+library(lubridate)
 ```
 
 # Read in urchins.csv and clean up column names
@@ -84,3 +85,28 @@ urchin_size_sum %>%
 ### Key takeaways
 
 On average, red urchins appear to be larger in size than purple urchins. The overall spread for red urchins is also much larger than the spread of purple urchins, therefore possibly indicating that red urchins have more variations in sizes. The average size of each sample is 4.47 cm for purple urchins and 6.78 for red urchins, therefore showing that red urchins are, on average, greater than 2 cm larger than purple urchins.
+
+# Section 2: Explore purple urchin counts for each site in each year
+
+### Wrangle Data
+
+Create a new data frame called purple_urchins
+
+Use a piped sequence to:
+- Filter for observations that only contain purple urchin using filter()
+- Convert date column to class date using myd() in the lubridate package
+- Using mutate(), create a new column containing only year
+- Using mutate(), create another new column called site_full that contains the full name of all the sites
+
+```{r}
+purple_urchin <- urchins_clean %>% 
+  filter(common_name == "Purple Urchin") %>% 
+  mutate(date = mdy(date)) %>% 
+  mutate(year = year(date)) %>% 
+  mutate(site_full = case_when(
+    site == "NAPL" ~ "Naples Reef",
+    site == "AQUE" ~ "Arroyo Quemado Reef",
+    site == "CARP" ~ "Carpinteria Reef",
+    site == "IVEE" ~ "Isla Vista Reef"))
+```
+
