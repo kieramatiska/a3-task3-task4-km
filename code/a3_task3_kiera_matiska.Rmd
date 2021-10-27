@@ -117,7 +117,26 @@ Table should contain the total number of purple urchins observed by site and yea
 
 ```{r, include = FALSE}
 site_num <- purple_urchin %>% 
-  group_by(site, year) %>% 
+  group_by(site_full, year) %>% 
   summarize(sample_size = n())
+```
+
+### Visualize Data
+
+Create a graph:
+- include counts of purple urchins per year
+- facet by sites
+
+```{r}
+ggplot(data = site_num, 
+       aes(x = year, y = sample_size)) +
+  geom_col(aes(color = site_full)) +
+  facet_wrap(~ site_full) +
+  theme_gray() +
+  theme(legend.key.size = unit(0.17, 'cm')) +
+  labs(title = "Number of Purple Urchins Per Year by Site",
+       x = "Year",
+       y = "Number of Purple Urchins",
+       site_full = "Site")
 ```
 
