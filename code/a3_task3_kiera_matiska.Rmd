@@ -32,7 +32,7 @@ urchins_clean <- urchins %>%
 
 ### Data Wrangling
 
-Use select() to select the columns size and common_name create a new data frame
+Use select() to select the columns size and common_name create a new data frame.
 
 ```{r}
 urchins_size <- urchins_clean %>% 
@@ -42,7 +42,7 @@ urchins_size <- urchins_clean %>%
 
 ### Data visualization
 
-Using ggplot(), create a histogram using geom_histogram to compare the distribution of sizes between red and purple urchins
+Using ggplot(), create a histogram using geom_histogram to compare the distribution of sizes between red and purple urchins:
 - Reduce number of bins to ~10
 - Add a caption figure
 
@@ -67,7 +67,7 @@ Using summarize() create a summary table for purple and red sea urchins. Table s
 - standard deviation
 - sample size
 
-Use kableExtra to finalize table for knitted document and add a table caption above the table
+Use kableExtra to finalize table for knitted document and add a table caption above the table.
 
 ```{r}
 urchin_size_sum <- urchins_size %>% 
@@ -90,7 +90,7 @@ On average, red urchins appear to be larger in size than purple urchins. The ove
 
 ### Wrangle Data
 
-Create a new data frame called purple_urchins
+Create a new data frame called purple_urchins.
 
 Use a piped sequence to:
 - Filter for observations that only contain purple urchin using filter()
@@ -109,5 +109,15 @@ purple_urchin <- urchins_clean %>%
     site == "CARP" ~ "Carpinteria Reef",
     site == "MOHK" ~ "Mohawk Reef",
     site == "IVEE" ~ "Isla Vista Reef"))
+```
+
+### Create a Stored Table Not Shown in the Knitted Document
+
+Table should contain the total number of purple urchins observed by site and year.
+
+```{r, include = FALSE}
+site_num <- purple_urchin %>% 
+  group_by(site, year) %>% 
+  summarize(sample_size = n())
 ```
 
