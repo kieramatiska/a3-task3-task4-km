@@ -1,9 +1,17 @@
 ---
-title: "Untitled"
+title: "Red and Purple Urchin Size and Purple Urchin Population Count"
 author: "Kiera Matiska"
 date: "10/23/2021"
 output: html_document
 ---
+
+# Objective
+
+This code looks at data on red and purple sea urchin. The first section compares the body size of the two different urchins. The second section counts the number of purple urchins that are found at each site from the year 2008 to 2020. This code wrangles data and used graphs to visualize it.
+
+### Source:
+
+Reed, D. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b. 
 
 ```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -111,11 +119,8 @@ purple_urchin <- urchins_clean %>%
     site == "IVEE" ~ "Isla Vista Reef"))
 ```
 
-### Create a Stored Table Not Shown in the Knitted Document
-
-Table should contain the total number of purple urchins observed by site and year.
-
 ```{r, include = FALSE}
+# Create a table to use in the following graph
 site_num <- purple_urchin %>% 
   group_by(site_full, year) %>% 
   summarize(sample_size = n())
@@ -126,17 +131,20 @@ site_num <- purple_urchin %>%
 Create a graph:
 - include counts of purple urchins per year
 - facet by sites
+- add a figure caption
 
 ```{r}
 ggplot(data = site_num, 
        aes(x = year, y = sample_size)) +
-  geom_col(aes(color = site_full)) +
-  facet_wrap(~ site_full) +
-  theme_gray() +
-  theme(legend.key.size = unit(0.17, 'cm')) +
+  geom_col(aes(fill = site_full)) +
+  theme(legend.key.size = unit(0.2, 'cm')) +
   labs(title = "Number of Purple Urchins Per Year by Site",
        x = "Year",
-       y = "Number of Purple Urchins",
-       site_full = "Site")
+       y = "Number of Purple Urchins")
 ```
 
+Figure 2: Number of Purple Urchins Per Year by Site. Separated by 5 sites (Naples Reef, Arroyo Quemado Reef, Carpenteria Reef, Mohawk Reef, and Isla Vista Reef), the number of individuals of purple urchins is examined by year from 2008 to 2020.
+
+I think that this graph does represent changes in the purple urchin population from 2008 to 2020, however that might not be the case. Because urchins are found underwater and along reefs, sometimes they may be hard to find and count, therefore there is always a chance of error when counting underwater species. Other things that could cause the changes viewed above could be environmental changes or reef health.
+
+# END TASK
