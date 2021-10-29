@@ -1,0 +1,108 @@
+---
+title: "Naple Reef Treatments on Purple Urchin Sizes"
+author: "Kiera Matiska"
+date: "10/28/2021"
+output: html_document
+---
+
+# Objective:
+
+This code wrangles and visualizes data on how the two different treatment groups in the Naples Reef affect the size of Purple Urchins.
+
+### Source:
+
+Reed, D. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+# Attach Packages
+library(tidyverse)
+library(here)
+library(janitor)
+library(lubridate)
+library(kableExtra)
+```
+
+# Read in and clean up data
+
+Use the 'read_csv()' and the 'here()' functions to read in urchins.csv.
+
+```{r}
+urchins <- read_csv(here("data", "urchins.csv")) # Read in data
+```
+
+# Clean up data
+
+Use the 'clean_names()' in the janitor package to change the column headers into lower_snake_case.
+
+```{r}
+urchins_clean <- urchins %>% 
+  clean_names() # Change column header titles to lower case letters
+```
+
+# Compare Data
+
+Compare the mean size of purple urchins in two different sections of Naples Reef: no giant kelp removal and annual kelp removal. Data is from 2010.
+
+### Wrangle Data
+
+- Use the 'myd()' function in the lubridate package to convert the date to date class
+- Use the 'mutate()' function to create a new column with the year using 'year()'
+- Use the 'filter()' function to separate observations that include three criteria: the species is purple urchin, the year is 2010, and the site NAPL for Naples Reef
+
+```{r}
+naple_purple <- urchins_clean %>% 
+  mutate(date = myd(date)) %>% # Change class in date column
+  mutate(year = year(date)) %>% # Add a year column
+  filter(site == "NAPL", common_name == "Purple Urchin", year == "2010") # Filter for specific observations
+```
+
+### Data Visualization
+
+Create a histogram comparing the size distribution of purple urchins at Naples in 2010, faceted by treatment
+
+```{r}
+ggplot(data = naple_purple, 
+       aes(x = size, color = treatment)) + # Change color of graph data
+  geom_histogram() + # Histogram
+  facet_wrap(~ treatment) + # Separated by treatment group
+  labs(title = "Size Distribution of Purple Urchin per Treatment Group",
+       x = "Urchin Diameter (cm)",
+       y = "Number of Individuals") # Added labels
+```
+
+Create a QQ-plot comparing the size distribution of purple urchins at Naples in 2010, faceted by treatment
+
+```{r}
+ggplot(data = naple_purple,
+       aes(sample = size)) +
+  geom_qq() + # Created a qq-plot
+  facet_wrap(~ treatment) # Separated data by treatment group
+```
+
+Between the two treatments, the one where kelp was removed annually appears to have more of a size spread and a higher population than the control treatment group, where there is no giant kelp removal. Given this data, it is likely that there is a healthier ecosystem for the treatment group (annual kelp removal), which can support more individuals.
+
+### Create a statistics table
+
+Using the 'summarize()' function, create a descriptive table comparing:
+- mean
+- standard deviation
+- sample size
+of each treatment.
+
+Finalize the table with the kableExtra package and add a caption above it.
+
+```{r}
+naple_purple_sum <- naple_purple %>% 
+  group_by(treatment) %>% #Splits the table into control and treatment
+  summarize(mean(size),
+            sd(size),
+            sample_size = n())
+
+naple_purple_sum %>% 
+  kbl(caption = "Table 1: Statistical data, including mean, standard deviation, and sample sizes, of Purple Urchin size under different treatment groups at different sites in the Naple Reef") %>% 
+  kable_styling()
+```
+
+# END TASK
